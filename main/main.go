@@ -5,6 +5,7 @@ import (
 	"blockChain/transaction"
 	"crypto/ecdsa"
 	"crypto/elliptic"
+	"encoding/json"
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
@@ -27,9 +28,11 @@ func main() {
 	coin.AddTransaction(t1)
 	coin.AddTransaction(t2)
 	coin.MineTransactionPool(&myPrivateKey.PublicKey)
-	fmt.Printf("%v", coin)
-	fmt.Println(t1.IsValid())
-	fmt.Println(t2.IsValid())
+	for _, c := range coin.Ch{
+		jsonTransaction, _:= json.Marshal(c.Transactions)
+		fmt.Printf("{Transactions: %x\n PreviousHash: %x\n Hash: %x\n Nounce:%d\n Timestamp:%x\n}",sha256.Sum256([]byte(jsonTransaction)), c.PreviousHash, c.Hash, c.Nounce, c.Timestamp)
+	}
+	// fmt.Printf("%v", coin)
 
 }
 
